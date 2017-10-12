@@ -76,7 +76,7 @@ function transformLetter(){
   $("#r1In").val(alph[(inputPosistion + rotor1Index) % 26])
   $("#r1Out").val(rotor1[(inputPosistion  + rotor1Index) % 26])
 
-inputPosistion = alph.indexOf(rotor1[(inputPosistion  + rotor1Index) % 26]) - rotor1Index;
+inputPosistion = alph.indexOf(rotor1[mod((inputPosistion  + rotor1Index) , 26)]) - rotor1Index;
 console.log("step 2: " + inputPosistion);
   $("#r2In").val(alph[inputPosistion % 26])
 
@@ -84,22 +84,22 @@ console.log("step 2: " + inputPosistion);
   $("#r2Out").val(rotor2[(inputPosistion   + rotor1Index) % 26])
 
   $("#r3In").val(rotor2[inputPosistion % 26])
-  inputPosistion = alph.indexOf(rotor2[inputPosistion % 26]);//e
+  inputPosistion = alph.indexOf(rotor2[mod(inputPosistion , 26)]);//e
   console.log("step 3: " + inputPosistion);
   $("#r3Out").val(rotor3[inputPosistion])
 
   $("#rIn").val(rotor3[inputPosistion % 26])
-  inputPosistion = alph.indexOf(rotor3[inputPosistion % 26]);//e
+  inputPosistion = alph.indexOf(rotor3[mod(inputPosistion , 26)]);//e
   console.log("step 4: " + inputPosistion);
   $("#rOut").val(reflector[inputPosistion % 26])
 
   $("#r3InBack").val(reflector[inputPosistion% 26])
-  inputPosistion = rotor3.indexOf(reflector[inputPosistion % 26]);//e
+  inputPosistion = rotor3.indexOf(reflector[mod(inputPosistion ,26)]);//e
   console.log("step 5: " + inputPosistion);
   $("#r3OutBack").val(alph[inputPosistion])
 
   $("#r2InBack").val(alph[inputPosistion % 26])
-  inputPosistion = rotor2.indexOf(alph[inputPosistion % 26]);//e
+  inputPosistion = rotor2.indexOf(alph[mod(inputPosistion , 26)]);//e
   console.log("step 6: " + inputPosistion);
   $("#r2OutBack").val(alph[inputPosistion % 26])//c
 
@@ -112,8 +112,14 @@ console.log("step 7: " + inputPosistion);
   // console.log(alph[inputPosistion]);
 
   $("#r1OutBack").val(alph[rotor1.indexOf(alph[inputPosistion % 26])])
-
-  result += alph[rotor1.indexOf(alph[inputPosistion % 26]) - rotor1Index]
+  console.log("inputPosistion: " + inputPosistion % 26);
+let test = rotor1.indexOf(alph[inputPosistion % 26]) - rotor1Index;
+console.log("test: " + test);
+test = mod(test, 26);
+console.log("test after mod: " + test);
+console.log("result pos: " + (rotor1.indexOf(alph[inputPosistion % 26]) - rotor1Index));
+  //result += alph[rotor1.indexOf(alph[mod(inputPosistion,26)]) - mod(rotor1Index,26)]
+result += alph[test];
   console.log("step 8: " + inputPosistion);
   $("#output").val(result)
 }
@@ -128,6 +134,11 @@ function shiftArray(arr, int){
   return result
 
 }
+
+var mod = function (n, m) {
+    var remain = n % m;
+    return Math.floor(remain >= 0 ? remain : remain + m);
+};
 
 //shiftArray(alph, 25);
 
