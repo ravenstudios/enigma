@@ -13,8 +13,8 @@ console.log("enigma");
 // console.log(arr);
 // console.log(arr.toString());
 let rotor1Index = 0;
-let rotor2Start = 0;
-let rotor3Start = 0;
+let rotor2Index = 0;
+let rotor3Index = 0;
 
 let alph = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 let reflector = ["Y", "R", "U", "H", "Q", "S", "L", "D", "P", "X", "N", "G", "O", "K", "M", "I", "E", "B", "F", "Z", "C", "W", "V", "J", "A", "T"];
@@ -27,103 +27,100 @@ let result = ""
 
 
 function transformLetter(){
-//   rotor1Index ++;
-//   shiftArray(rotor1, rotor1Index);
-//   shiftArray(rotor2, rotor2Start);
-//   shiftArray(rotor3, rotor3Start);
-//   let inputKey = document.getElementById('input').value;
-//   let rotor1Index = alph.indexOf(inputKey) + rotor1Index;
-//   $("#r1In").val(rotor1Index);
-//   console.log("inputIndex: " + rotor1Index);
-//   console.log("rotor1: " + rotor1[rotor1Index]);
-//   let rotor2Index = alph.indexOf(rotor1[rotor1Index]);
-//   console.log("rotor2 index: " + rotor2Index);
-//   console.log("rotor2: " + rotor2[rotor2Index]);
-//   let rotor3Index = alph.indexOf(rotor2[rotor2Index]);
-//   console.log("rotor3 index: " + rotor3Index);
-//   console.log("rotor3: " + rotor3[rotor3Index]);
-//   let reflectorIndex = alph.indexOf(rotor3[rotor3Index]);
-//   console.log("reflector: " + reflector[reflectorIndex]);
-//   rotor3Index = rotor3.indexOf(reflector[reflectorIndex]);
-//   console.log("rotor3Index: " + rotor3Index);
-//   console.log("rotor3 letter " + alph[rotor3Index]);
-//   rotor2Index = rotor2.indexOf(alph[rotor3Index]);
-//   console.log("rotor2Index: " + rotor2Index);
-//   console.log("rotor2 letter " + alph[rotor2Index]);
-//   rotor1Index = rotor1.indexOf(alph[rotor2Index]);
-//   console.log("rotor1Index: " + rotor1Index);
-//   console.log("rotor1 letter " + alph[rotor1Index]);
-//   let resultLetter = alph[rotor1Index];
-//   result += resultLetter;
-//   console.log("RESULT LETTER: " + resultLetter);
-// document.getElementById("output").value = result;
 
-//get letter pressed
   let input = $("#input").val().toUpperCase();
-//rotate rotors
-//console.log(rotor1);
+
   rotor1Index++;
-  // console.log(rotor1Index);
-  // console.log(rotor1);
-//shift arrays
-  // rotor1 = shiftArray(rotor1, rotor1Index);
-  // shiftArray(rotor2, rotor2Start);
-  // shiftArray(rotor3, rotor3Start);
-//get pin posisiton of input
-  let inputPosistion = alph.indexOf(input);
-  console.log("step 1: " + inputPosistion);
-  //console.log(inputPosistion);
-  $("#r1In").val(alph[(inputPosistion + rotor1Index) % 26])
-  $("#r1Out").val(rotor1[(inputPosistion  + rotor1Index) % 26])
 
-inputPosistion = alph.indexOf(rotor1[mod((inputPosistion  + rotor1Index) , 26)]) - rotor1Index;
-console.log("step 2: " + inputPosistion);
-  $("#r2In").val(alph[inputPosistion % 26])
+  let inputPosistion = mod(alph.indexOf(input) + rotor1Index, 26);
+  $("#r1In").val(alph[inputPosistion])
+  $("#r1Out").val(rotor1[inputPosistion])
+  //$("#r1In").val(alph[mod((inputPosistion + rotor1Index) , 26)])
 
+  inputPosistion = alph.indexOf(rotor1[inputPosistion]) - rotor1Index + rotor2Index;
 
-  $("#r2Out").val(rotor2[(inputPosistion   + rotor1Index) % 26])
+  $("#r2In").val(alph[inputPosistion])
+  $("#r2Out").val(rotor2[inputPosistion])
+  //$("#r1Out").val(rotor1[mod((inputPosistion  + rotor1Index) , 26)])
 
-  $("#r3In").val(rotor2[inputPosistion % 26])
-  inputPosistion = alph.indexOf(rotor2[mod(inputPosistion , 26)]);//e
-  console.log("step 3: " + inputPosistion);
+  //inputPosistion = alph.indexOf(rotor1[mod((inputPosistion  + rotor1Index) , 26)]) - rotor1Index;
+
+  // $("#r2In").val(alph[mod(inputPosistion + rotor2Index , 26)])
+  // $("#r2Out").val(rotor2[mod((inputPosistion   + rotor2Index) , 26)])
+
+  // inputPosistion = alph.indexOf(rotor2[mod((inputPosistion  + rotor2Index) , 26)]) - rotor2Index;
+  //
+  // $("#r3In").val(rotor2[mod(inputPosistion + rotor3Index , 26)])
+  // $("#r3Out").val(rotor3[mod(inputPosistion, 26)])
+
+  inputPosistion = alph.indexOf(rotor2[inputPosistion]) - rotor2Index + rotor3Index;
+
+  $("#r3In").val(alph[inputPosistion])
   $("#r3Out").val(rotor3[inputPosistion])
 
-  $("#rIn").val(rotor3[inputPosistion % 26])
-  inputPosistion = alph.indexOf(rotor3[mod(inputPosistion , 26)]);//e
-  console.log("step 4: " + inputPosistion);
-  $("#rOut").val(reflector[inputPosistion % 26])
+  inputPosistion = alph.indexOf(rotor3[inputPosistion]) - rotor3Index;
+/////////////////////////REFLECTOR////////////////////////////////////////////////////////////////////
+  $("#rIn").val(alph[inputPosistion]);
+  $("#rOut").val(reflector[inputPosistion])
+  /////////////////////////REFLECTOR////////////////////////////////////////////////////////////////////
 
-  $("#r3InBack").val(reflector[inputPosistion% 26])
-  inputPosistion = rotor3.indexOf(reflector[mod(inputPosistion ,26)]);//e
-  console.log("step 5: " + inputPosistion);
-  $("#r3OutBack").val(alph[inputPosistion])
+  //inputPosistion = alph.indexOf(rotor3[mod((inputPosistion  + rotor3Index) , 26)]) - rotor3Index;
+  console.log(inputPosistion);
+  //inputPosistion = rotor3.indexOf(reflector[inputPosistion]) + rotor3Index;
 
-  $("#r2InBack").val(alph[inputPosistion % 26])
-  inputPosistion = rotor2.indexOf(alph[mod(inputPosistion , 26)]);//e
-  console.log("step 6: " + inputPosistion);
-  $("#r2OutBack").val(alph[inputPosistion % 26])//c
+  inputPosistion = alph.indexOf(reflector[inputPosistion]) + rotor3Index;
+  $("#r3InBack").val(alph[inputPosistion])
+  inputPosistion = rotor3.indexOf(reflector[mod(inputPosistion ,26)]) - rotor3Index;
+  let temp = alph.indexOf(rotor3[inputPosistion]) - rotor2Index;
+  $("#r3OutBack").val(alph[temp]);
+
+  inputPosistion = alph.indexOf(rotor3[inputPosistion]) + rotor2Index;
+  $("#r2InBack").val(alph[inputPosistion])
+  inputPosistion = rotor2.indexOf(rotor3[mod(inputPosistion ,26)]) - rotor2Index;
+   temp = alph.indexOf(rotor2[inputPosistion]) - rotor1Index;
+  $("#r2OutBack").val(alph[temp]);
 
 
-inputPosistion = inputPosistion + rotor1Index
-console.log("step 7: " + inputPosistion);
-  $("#r1InBack").val(alph[inputPosistion % 26])
 
-  // console.log(inputPosistion);
-  // console.log(alph[inputPosistion]);
 
-  $("#r1OutBack").val(alph[rotor1.indexOf(alph[inputPosistion % 26])])
-  console.log("inputPosistion: " + inputPosistion % 26);
+
+
+//   $("#r2InBack").val(alph[inputPosistion % 26])
+//
+//   inputPosistion = rotor2.indexOf(alph[mod(inputPosistion , 26)]) - rotor2Index;
+//
+//
+//
+//   $("#r2OutBack").val(alph[inputPosistion % 26])//c
+//
+//
+// inputPosistion = inputPosistion + rotor1Index
+//
+//
+//   $("#r1InBack").val(alph[mod(inputPosistion , 26)])
+//
+//
+//
+//   $("#r1OutBack").val(alph[rotor1.indexOf(alph[mod(inputPosistion , 26)])])
 let test = rotor1.indexOf(alph[inputPosistion % 26]) - rotor1Index;
-console.log("test: " + test);
+
 test = mod(test, 26);
-console.log("test after mod: " + test);
-console.log("result pos: " + (rotor1.indexOf(alph[inputPosistion % 26]) - rotor1Index));
   //result += alph[rotor1.indexOf(alph[mod(inputPosistion,26)]) - mod(rotor1Index,26)]
 result += alph[test];
-  console.log("step 8: " + inputPosistion);
   $("#output").val(result)
 }
-////////////////works nned to fix out of bounds with %mod
+
+
+
+
+
+
+
+
+
+
+
+
 function shiftArray(arr, int){
 
   let result = [];
