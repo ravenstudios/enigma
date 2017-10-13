@@ -12,9 +12,9 @@ console.log("enigma");
 // let arr = s.split("");
 // console.log(arr);
 // console.log(arr.toString());
-let rotor1Index = 0;
-let rotor2Index = 0;
-let rotor3Index = 0;
+let rotor1Index = 1;
+let rotor2Index = 2;
+let rotor3Index = 3;
 
 let alph = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 let reflector = ["Y", "R", "U", "H", "Q", "S", "L", "D", "P", "X", "N", "G", "O", "K", "M", "I", "E", "B", "F", "Z", "C", "W", "V", "J", "A", "T"];
@@ -37,7 +37,7 @@ function transformLetter(){
   $("#r1Out").val(rotor1[inputPosistion])
   //$("#r1In").val(alph[mod((inputPosistion + rotor1Index) , 26)])
 
-  inputPosistion = alph.indexOf(rotor1[inputPosistion]) - rotor1Index + rotor2Index;
+  inputPosistion = mod(alph.indexOf(rotor1[inputPosistion]) - rotor1Index + rotor2Index, 26);
 
   $("#r2In").val(alph[inputPosistion])
   $("#r2Out").val(rotor2[inputPosistion])
@@ -53,37 +53,59 @@ function transformLetter(){
   // $("#r3In").val(rotor2[mod(inputPosistion + rotor3Index , 26)])
   // $("#r3Out").val(rotor3[mod(inputPosistion, 26)])
 
-  inputPosistion = alph.indexOf(rotor2[inputPosistion]) - rotor2Index + rotor3Index;
+  inputPosistion = mod(alph.indexOf(rotor2[inputPosistion]) - rotor2Index + rotor3Index, 26);
 
   $("#r3In").val(alph[inputPosistion])
   $("#r3Out").val(rotor3[inputPosistion])
 
-  inputPosistion = alph.indexOf(rotor3[inputPosistion]) - rotor3Index;
+  inputPosistion = mod(alph.indexOf(rotor3[inputPosistion]) - rotor3Index, 26);
 /////////////////////////REFLECTOR////////////////////////////////////////////////////////////////////
   $("#rIn").val(alph[inputPosistion]);
   $("#rOut").val(reflector[inputPosistion])
   /////////////////////////REFLECTOR////////////////////////////////////////////////////////////////////
 
   //inputPosistion = alph.indexOf(rotor3[mod((inputPosistion  + rotor3Index) , 26)]) - rotor3Index;
-  console.log(inputPosistion);
+
   //inputPosistion = rotor3.indexOf(reflector[inputPosistion]) + rotor3Index;
 
-  inputPosistion = alph.indexOf(reflector[inputPosistion]) + rotor3Index;
+  inputPosistion = mod(alph.indexOf(reflector[inputPosistion]) + rotor3Index, 26);
   $("#r3InBack").val(alph[inputPosistion])
-  inputPosistion = rotor3.indexOf(reflector[mod(inputPosistion ,26)]) - rotor3Index;
-  let temp = alph.indexOf(rotor3[inputPosistion]) - rotor2Index;
-  $("#r3OutBack").val(alph[temp]);
+  //inputPosistion = rotor3.indexOf(reflector[mod(inputPosistion ,26)]) - rotor3Index;
+  // let temp = mod(alph.indexOf(rotor3[inputPosistion]) - rotor2Index, 26);
 
-  inputPosistion = alph.indexOf(rotor3[inputPosistion]) + rotor2Index;
+  inputPosistion = mod(rotor3.indexOf(alph[inputPosistion]), 26);
+
+  $("#r3OutBack").val(alph[inputPosistion]);
+
+
+  //inputPosistion = mod(alph.indexOf(rotor3[inputPosistion]) + rotor2Index, 26);
+  inputPosistion = mod(inputPosistion - rotor3Index + rotor2Index, 26);
+
   $("#r2InBack").val(alph[inputPosistion])
-  inputPosistion = rotor2.indexOf(rotor3[mod(inputPosistion ,26)]) - rotor2Index;
-   temp = alph.indexOf(rotor2[inputPosistion]) - rotor1Index;
-  $("#r2OutBack").val(alph[temp]);
+  //inputPosistion = rotor3.indexOf(reflector[mod(inputPosistion ,26)]) - rotor3Index;
+  // let temp = mod(alph.indexOf(rotor3[inputPosistion]) - rotor2Index, 26);
+
+  inputPosistion = mod(rotor2.indexOf(alph[inputPosistion]), 26);
+
+  $("#r2OutBack").val(alph[inputPosistion]);
 
 
 
 
 
+  inputPosistion = mod(inputPosistion - rotor2Index + rotor1Index, 26);
+
+  $("#r1InBack").val(alph[inputPosistion])
+  //inputPosistion = rotor3.indexOf(reflector[mod(inputPosistion ,26)]) - rotor3Index;
+  // let temp = mod(alph.indexOf(rotor3[inputPosistion]) - rotor2Index, 26);
+
+  inputPosistion = mod(rotor1.indexOf(alph[inputPosistion]), 26);
+
+  $("#r1OutBack").val(alph[inputPosistion]);
+
+  inputPosistion = mod(inputPosistion - rotor1Index, 26);
+  result += alph[inputPosistion];
+    $("#output").val(result)
 
 //   $("#r2InBack").val(alph[inputPosistion % 26])
 //
@@ -102,12 +124,12 @@ function transformLetter(){
 //
 //
 //   $("#r1OutBack").val(alph[rotor1.indexOf(alph[mod(inputPosistion , 26)])])
-let test = rotor1.indexOf(alph[inputPosistion % 26]) - rotor1Index;
-
-test = mod(test, 26);
-  //result += alph[rotor1.indexOf(alph[mod(inputPosistion,26)]) - mod(rotor1Index,26)]
-result += alph[test];
-  $("#output").val(result)
+// let test = rotor1.indexOf(alph[inputPosistion % 26]) - rotor1Index;
+//
+// test = mod(test, 26);
+//   //result += alph[rotor1.indexOf(alph[mod(inputPosistion,26)]) - mod(rotor1Index,26)]
+// result += alph[test];
+//   $("#output").val(result)
 }
 
 
