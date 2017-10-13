@@ -1,24 +1,76 @@
 console.log("enigma");
 
-let rotor1Index = 1;
-let rotor2Index = 2;
-let rotor3Index = 3;
+let rotor1Index;
+let rotor2Index;
+let rotor3Index;
 
 let alph = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 let reflector = ["Y", "R", "U", "H", "Q", "S", "L", "D", "P", "X", "N", "G", "O", "K", "M", "I", "E", "B", "F", "Z", "C", "W", "V", "J", "A", "T"];
-let rotor1 = ["E", "K", "M", "F", "L", "G", "D", "Q", "V", "Z", "N", "T", "O", "W", "Y", "H", "X", "U", "S", "P", "A", "I", "B", "R", "C", "J"];
-let rotor2 = ["A", "J", "D", "K", "S", "I", "R", "U", "X", "B", "L", "H", "W", "T", "M", "C", "Q", "G", "Z", "N", "P", "Y", "F", "V", "O", "E"];
-let rotor3 =  ["B", "D", "F", "H", "J", "L", "C", "P", "R", "T", "X", "V", "Z", "N", "Y", "E", "I", "W", "G", "A", "K", "M", "U", "S", "Q", "O"];
+let I = ["E", "K", "M", "F", "L", "G", "D", "Q", "V", "Z", "N", "T", "O", "W", "Y", "H", "X", "U", "S", "P", "A", "I", "B", "R", "C", "J"];
+let II = ["A", "J", "D", "K", "S", "I", "R", "U", "X", "B", "L", "H", "W", "T", "M", "C", "Q", "G", "Z", "N", "P", "Y", "F", "V", "O", "E"];
+let III =  ["B", "D", "F", "H", "J", "L", "C", "P", "R", "T", "X", "V", "Z", "N", "Y", "E", "I", "W", "G", "A", "K", "M", "U", "S", "Q", "O"];
+let rotor1;
+let rotor2;
+let rotor3;
+let r1Turnover;
+let r2Turnover;
+let r3Turnover;
+
+let rotors = {
+  I:{
+    arr: I,
+    turnover: "Q"
+  },
+  II:{
+    arr: II,
+    turnover: "E"
+  },
+  III:{
+    arr: III,
+    turnover: "V"
+  }
+};
+
 
 let result = ""
+
+$(()=>{
+  console.log("j querry");
+
+  makeSelectList();
+
+  $('#slot1').val("I");
+  $('#slot2').val("II");
+  $('#slot3').val("III");
+
+  $(window).keypress(function(key) {
+    console.log(key.originalEvent.key);
+    $("#input").val(key.originalEvent.key);
+    transformLetter()
+  });
+
+
+});
 
 
 
 function transformLetter(){
+  rotor1 = rotors[$("#slot1").val()].arr;
+  rotor2 = rotors[$("#slot2").val()].arr;
+  rotor3 = rotors[$("#slot3").val()].arr;
+  r1Turnover = rotors[$("#slot1").val()].turnover;
+  r2Turnover = rotors[$("#slot2").val()].turnover;
+  r3Turnover = rotors[$("#slot3").val()].turnover;
+
+  rotor1Index = parseInt($( "#slot1Index" ).val());
+  rotor2Index = parseInt($( "#slot2Index" ).val());
+  rotor3Index = parseInt($( "#slot3Index" ).val());
+
 
   let input = $("#input").val().toUpperCase();
 
-  rotor1Index++;
+  //rotor1Index++;
+  turnover();
 
   let inputPosistion = mod(alph.indexOf(input) + rotor1Index, 26);
   $("#r1In").val(alph[inputPosistion])
@@ -72,6 +124,9 @@ function transformLetter(){
   result += alph[inputPosistion];
   $("#output").val(result)
 
+  $('#slot1Index').val(rotor1Index % 26);
+  $('#slot2Index').val(rotor2Index % 26);
+  $('#slot3Index').val(rotor3Index % 26);
 }
 
 
@@ -80,3 +135,44 @@ var mod = function (n, m) {
     var remain = n % m;
     return Math.floor(remain >= 0 ? remain : remain + m);
 };
+
+
+function makeSelectList(){
+
+
+
+  for (var i = 0; i < 26; i++) {
+
+    $('#slot1Index').append($('<option>', {
+      value: i,
+      text:  alph[i] + " " + (i + 1)
+    }));
+
+    $('#slot2Index').append($('<option>', {
+      value: i,
+      text:  alph[i] + " " + (i + 1)
+    }));
+
+    $('#slot3Index').append($('<option>', {
+      value: i,
+      text:  alph[i] + " " + (i + 1)
+    }));
+  }
+}
+
+function turnover(){
+
+
+  let r1Pos = alph[$( "#slot1Index" ).val()];
+  let r2Pos = alph[$( "#slot2Index" ).val()];
+  //let r3Pos = alph[$( "#slot1Index" ).val()];
+
+  if(r1Pos === r1Turnover){
+    rotor2Index++;
+  }
+
+  if(r1Pos === r1Turnover && r2Pos === r2Turnover){
+    rotor3Index++;
+  }
+  rotor1Index++;
+}
