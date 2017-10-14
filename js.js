@@ -3,6 +3,9 @@ console.log("enigma");
 let rotor1Index;
 let rotor2Index;
 let rotor3Index;
+let lampboardRow1 = ["Q", "W", "E", "R", "T", "Z", "U", "I", "O"];
+let lampboardRow2 = ["A", "S", "D", "F", "G", "H", "J", "K"];
+let lampboardRow3 = ["P", "Y", "X", "C", "V", "B", "N", "M", "L"];
 
 let alph = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 let reflector = ["Y", "R", "U", "H", "Q", "S", "L", "D", "P", "X", "N", "G", "O", "K", "M", "I", "E", "B", "F", "Z", "C", "W", "V", "J", "A", "T"];
@@ -38,7 +41,7 @@ $(()=>{
   console.log("j querry");
 
   makeSelectList();
-
+  makeLampBoard();
   $('#slot1').val("I");
   $('#slot2').val("II");
   $('#slot3').val("III");
@@ -55,6 +58,7 @@ $(()=>{
 
 
 function transformLetter(){
+  clearLampBoard();
   rotor1 = rotors[$("#slot1").val()].arr;
   rotor2 = rotors[$("#slot2").val()].arr;
   rotor3 = rotors[$("#slot3").val()].arr;
@@ -127,6 +131,8 @@ function transformLetter(){
   $('#slot1Index').val(rotor1Index % 26);
   $('#slot2Index').val(rotor2Index % 26);
   $('#slot3Index').val(rotor3Index % 26);
+
+  $("#lamp" + alph[inputPosistion]).css("background-color", "yellow");
 }
 
 
@@ -175,4 +181,38 @@ function turnover(){
     rotor3Index++;
   }
   rotor1Index++;
+}
+
+function clearLampBoard(){
+  for (var i = 0; i < 26; i++) {
+    let l = alph[i];
+      $("#lamp" + l).css("background-color", "white");
+    }
+}
+function makeLampBoard(){
+  let html = "<table><tr>";
+  lampboardRow1.forEach((i)=>{
+    console.log(i);
+    html +="<td><input class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
+
+
+  });
+  html += "</tr>";
+  html += "<tr>";
+  lampboardRow2.forEach((i)=>{
+    console.log(i);
+    html += "<td><input style=\"margin-left: 50%\" class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
+
+  });
+  html += "</tr>";
+  html += "<tr>";
+
+
+  lampboardRow3.forEach((i)=>{
+    console.log(i);
+    html += "<td><input class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
+  });
+
+  html += "</tr></table>"
+  $("#lampboard").append(html);
 }
