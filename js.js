@@ -45,7 +45,7 @@ $(()=>{
 
   $(window).keypress(function(key) {
     console.log(key.originalEvent.key);
-    $("#input").val(key.originalEvent.key);
+    $("#input").val(key.originalEvent.key.toUpperCase());
     transformLetter()
   });
 

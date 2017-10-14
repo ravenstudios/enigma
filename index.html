@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Enigma Machine</title>
 
 
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">     -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 
-
-
-    </script>
   </head>
   <body>
     <!-- <input type="text" id="input" value="">
@@ -17,9 +18,16 @@
     <-->
     <div class="container"><!-- container -->
 
-      <div class="row well"><!-- 1st row -->
+      <div class="row">
+        <div class="col logo">
+          <img class=" img-fluid center-block" width="10%" style="margin:auto" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Enigma-logo.svg/2000px-Enigma-logo.svg.png" alt="enigma logo">
+        </div>
 
-        <div class="col-lg-3 well">
+      </div>
+      
+      <div class="row "><!-- 1st row -->
+
+        <div class="col text-center">
           <select id="slot3">
             <option value="I">I</option>
             <option value="II">II</option>
@@ -32,7 +40,7 @@
 
         </div>
 
-        <div class="col-lg-3 well">
+        <div class="col text-center">
           <select id="slot2">
             <option value="I">I</option>
             <option value="II">II</option>
@@ -45,7 +53,7 @@
 
         </div>
 
-        <div class="col-lg-3 well">
+        <div class="col text-center">
           <select id="slot1">
             <option value="I">I</option>
             <option value="II">II</option>
@@ -59,120 +67,200 @@
         </div>
 
       </div><!-- end 1st row -->
-<br>
-      <div class="row"><!-- input row-- >
-xxxxxxx
-        <div class="col-md-12 well">
+      <br>
+      <div class="row "><!-- 2nd row -->
 
+        <div class="col center-block">
 
-
+          <table>
+            <tr>
+              <th>
+                Rotor 3 In
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r3In" value="" readonly>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Rotor 3 Out
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r3Out" value="" readonly>
+              </td>
+            </tr>
+          </table>
         </div>
 
-      </div><!-- end input row-- >
-<br>
-      <div class="row well"><!-- 2nd row -->
-
-        <div class="col-lg-3 well">
-          Rotor 1 In
-          <input type="text" id="r1In" value="">
-          <br>
-          Rotor 1 Out
-          <input type="text" id="r1Out" value="">
-          <br>
-
-        </div>
-<br>
-        <div class="col-lg-3 well">
-          Rotor 2 In
-          <input type="text" id="r2In" value="">
-          <br>
-          Rotor 2 Out
-          <input type="text" id="r2Out" value="">
-          <br>
-
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>
+                Rotor 2 In
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r2In" value="" readonly>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Rotor 2 Out
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r2Out" value="" readonly>
+              </td>
+            </tr>
+          </table>
         </div>
 
-        <div class="col-lg-3 well">
-          Rotor 3 In
-          <input type="text" id="r3In" value="">
-          <br>
-          Rotor 3 Out
-          <input type="text" id="r3Out" value="">
-          <br>
 
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>
+                Rotor 1 In
+              </th>
+              <td>
+                <input class="rotorBox" type="text" id="r1In" value="" readonly>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Rotor 1 Out
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r1Out" value="" readonly>
+              </td>
+            </tr>
+          </table>
         </div>
-
       </div><!-- end 2nd row -->
-
       <br>
 
-      <div class="row"><!-- reflector-->
-        <div class="col-lg-4">
-          Reflector In
-          <input type="text" id="rIn" value="">
+      <div class="row "><!-- reflector-->
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>
+                Reflector In
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="rIn" value="" readonly>
+              </td>
+            </tr>
+          </table>
 
         </div>
 
-        <div class="col-lg-4">
-
-          Reflector Out
-          <input type="text" id="rOut" value="">
-
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>
+                Reflector Out
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="rOut" value="" readonly>
+              </td>
+            </tr>
+          </table>
         </div>
       </div><!-- end reflector-->
-<br>
-      <div class="row well"><!-- 3rd row -->
+      <br>
+      <div class="row "><!-- 3rd row -->
 
-        <div class="col-lg-3 well">
-          Rotor  Back 3 In
-          <input type="text" id="r3InBack" value="">
-          <br>
-          Rotor  Back 3 Out
-          <input type="text" id="r3OutBack" value="">
-          <br>
-
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>
+                Rotor  Back 3 In
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r3InBack" value="" readonly>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Rotor  Back 3 Out
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r3OutBack" value="" readonly>
+              </td>
+            </tr>
+          </table>
         </div>
-<br>
-        <div class="col-lg-3 well">
-          Rotor Back 2 In
-          <input type="text" id="r2InBack" value="">
-          <br>
-          Rotor Back 2 Out
-          <input type="text" id="r2OutBack" value="">
-          <br>
 
-        </div>
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>
+                Rotor Back 2 In
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r2InBack" value="" readonly>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Rotor Back 2 Out
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r2OutBack" value="" readonly>
+              </td>
+            </tr>
+          </table>
+      </div>
 
-        <div class="col-lg-3 well">
-          Rotor Back 1 In
-          <input type="text" id="r1InBack" value="">
-          <br>
-          Rotor Back 1 Out
-          <input type="text" id="r1OutBack" value="">
-          <br>
-
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>
+                Rotor Back 1 In
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r1InBack" value="" readonly>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Rotor Back 1 Out
+              </th>
+              <td>
+                <input class="rotorBox"  type="text" id="r1OutBack" value="" readonly>
+              </td>
+            </tr>
+          </table>
         </div>
 
       </div><!-- end 3rd row -->
-<br>
-      <div class="row"><!-- input row-->
+      <br>
+      <div class="row "><!-- input row-->
 
-        <div class="col-lg-4">
-          Key In
-          <input type="text" id="input" value="">
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>Key In</th>
+              <td><input class="rotorBox"  type="text" id="input" value="" readonly></td>
+            </tr>
+          </table>
+
+
         </div>
 
 
 
 
-        <div class="col-lg-4">
-          Output
-          <input type="text" id="output" value="">
+        <div class="col center-block">
+          <table>
+            <tr>
+              <th>Output</th>
+              <td><input  type="text" id="output" value="" readonly></td>
+            </tr>
+          </table>
+
+
         </div>
 
-        <div class="col-lg-4">
-            <input type="button" name="submit" value="Submit" onClick="transformLetter()">
-        </div>
+
 
       </div><!-- end input row-->
     </div><!-- end container -->
