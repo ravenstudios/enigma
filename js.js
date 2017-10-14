@@ -48,12 +48,14 @@ $(()=>{
   $('#slot2').val("II");
   $('#slot3').val("III");
 
-  $(window).keypress(function(key) {
-    console.log(key.originalEvent.key);
-    let input = key.originalEvent.key.toUpperCase()
-    inputString += input;
-    $("#input").val(inputString);
-    transformLetter(input)
+  $(window).keyup(function(key) {
+    validateKeyPress(key);
+    // console.log(key.originalEvent.key);
+    // console.log(key.which);
+    // let input = key.originalEvent.key.toUpperCase()
+    // inputString += input;
+    // $("#input").val(inputString);
+    // transformLetter(input)
   });
 
 
@@ -187,6 +189,23 @@ function turnover(){
   rotor1Index++;
 }
 
+function turnoverBack(){
+
+
+  let r1Pos = alph[$( "#slot1Index" ).val() - 1];
+  let r2Pos = alph[$( "#slot2Index" ).val() - 1];
+  //let r3Pos = alph[$( "#slot1Index" ).val()];
+
+  if(r1Pos === r1Turnover){
+    rotor2Index--;
+  }
+
+  if(r1Pos === r1Turnover && r2Pos === r2Turnover){
+    rotor3Index--;
+  }
+  rotor1Index--;
+}
+
 function clearLampBoard(){
   for (var i = 0; i < 26; i++) {
     let l = alph[i];
@@ -196,7 +215,7 @@ function clearLampBoard(){
 function makeLampBoard(){
   let html = "<table><tr>";
   lampboardRow1.forEach((i)=>{
-    console.log(i);
+
     html +="<td><input class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
 
 
@@ -204,7 +223,7 @@ function makeLampBoard(){
   html += "</tr>";
   html += "<tr>";
   lampboardRow2.forEach((i)=>{
-    console.log(i);
+
     html += "<td><input style=\"margin-left: 50%\" class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
 
   });
@@ -213,10 +232,55 @@ function makeLampBoard(){
 
 
   lampboardRow3.forEach((i)=>{
-    console.log(i);
+
     html += "<td><input class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
   });
 
   html += "</tr></table>"
   $("#lampboard").append(html);
+}
+
+function validateKeyPress(key){
+
+  // console.log(key.originalEvent.key);
+  // console.log(key.which);
+  // let input = key.originalEvent.key.toUpperCase()
+  // inputString += input;
+  // $("#input").val(inputString);
+  // transformLetter(input)
+
+  if(key.which >= 65 && key.which <= 90){
+    input = key.originalEvent.key.toUpperCase();
+    inputString += input;
+    $("#input").val(inputString);
+    transformLetter(input);
+  }
+
+  if(key.which >= 97 && key.which <= 122){
+    input = key.originalEvent.key.toUpperCase();
+    inputString += input;
+    $("#input").val(inputString);
+    transformLetter(input);
+  }
+
+  if(key.which === 8 || key.which === 46){
+
+
+    if(result.length > 0){
+      clearLampBoard();
+      inputString = inputString.substring(0, inputString.length - 1);
+      $("#input").val(inputString);
+      result = result.substring(0, result.length - 1);
+      $("#output").val(result)
+
+      turnoverBack();
+
+      $('#slot1Index').val(rotor1Index % 26);
+      $('#slot2Index').val(rotor2Index % 26);
+      $('#slot3Index').val(rotor3Index % 26);
+      $("#lamp" + result[result.length - 1]).css("background-color", "yellow");
+    }
+
+
+  }
 }
