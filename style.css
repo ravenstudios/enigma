@@ -29,6 +29,13 @@
 
   border-radius: 15px 15px 15px 15px;
 }
+#input{
+  width: 800px;
+  text-align: center;
+  border: 3px solid black;
+
+  border-radius: 15px 15px 15px 15px;
+}
 
 body{
   padding-top: 1%;
@@ -68,4 +75,9 @@ table, tr, td, th{
 
 .lampboard{
   /*font-size: 30px !important;*/
+}
+
+.instructions{
+
+  background-color: white;
 }

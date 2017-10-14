@@ -19,6 +19,8 @@ let r1Turnover;
 let r2Turnover;
 let r3Turnover;
 
+let inputString = "";
+
 let rotors = {
   I:{
     arr: I,
@@ -48,8 +50,10 @@ $(()=>{
 
   $(window).keypress(function(key) {
     console.log(key.originalEvent.key);
-    $("#input").val(key.originalEvent.key.toUpperCase());
-    transformLetter()
+    let input = key.originalEvent.key.toUpperCase()
+    inputString += input;
+    $("#input").val(inputString);
+    transformLetter(input)
   });
 
 
@@ -57,7 +61,7 @@ $(()=>{
 
 
 
-function transformLetter(){
+function transformLetter(input){
   clearLampBoard();
   rotor1 = rotors[$("#slot1").val()].arr;
   rotor2 = rotors[$("#slot2").val()].arr;
@@ -71,7 +75,7 @@ function transformLetter(){
   rotor3Index = parseInt($( "#slot3Index" ).val());
 
 
-  let input = $("#input").val().toUpperCase();
+  //let input = $("#input").val().toUpperCase();
 
   //rotor1Index++;
   turnover();
