@@ -69,7 +69,7 @@ function transformLetter(input){
 
   inputPosistion = mod(inputPosistion - rotor1Index, 26);
   result += alph[inputPosistion];
-  $("#output").val(result)
+  $("#output").val(formatCode(result));
 
   $('#slot1Index').val(rotor1Index % 26);
   $('#slot2Index').val(rotor2Index % 26);

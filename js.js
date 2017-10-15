@@ -163,7 +163,7 @@ function validateKeyPress(key){
     input = key.originalEvent.key.toUpperCase();
     input = plugboardConvert(input);
     inputString += input;
-    $("#input").val(inputString);
+    $("#input").val(formatCode(inputString));
     transformLetter(input);
   }
 
@@ -232,6 +232,7 @@ function reset(){
   inputString = "";
   result = "";
   hasBeenDecoded = false;
+  plugboardValuesIn = [];
 
   plugboardIn.forEach((i, index)=>{
     $("#"+i).val("");
@@ -241,4 +242,17 @@ function reset(){
     $("#"+i).val("");
   });
 
+}
+
+
+function formatCode(str){
+  var ret = [];
+      var i;
+      var len;
+
+      for(i = 0, len = str.length; i < len; i += 4) {
+         ret.push(str.substr(i, 4))
+      }
+
+      return ret.join(" ");
 }
