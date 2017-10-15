@@ -20,7 +20,7 @@ let r2Turnover;
 let r3Turnover;
 
 let inputString = "";
-
+let hasBeenDecoded = false;
 let rotors = {
   I:{
     arr: I,
@@ -50,14 +50,15 @@ $(()=>{
 
   $(window).keyup(function(key) {
     validateKeyPress(key);
-    // console.log(key.originalEvent.key);
-    // console.log(key.which);
-    // let input = key.originalEvent.key.toUpperCase()
-    // inputString += input;
-    // $("#input").val(inputString);
-    // transformLetter(input)
   });
 
+  $("#submit").click(()=>{
+    decodeMessage();
+  });
+
+  $("#reset").click(()=>{
+    reset();
+  });
 
 });
 
@@ -242,12 +243,10 @@ function makeLampBoard(){
 
 function validateKeyPress(key){
 
-  // console.log(key.originalEvent.key);
-  // console.log(key.which);
-  // let input = key.originalEvent.key.toUpperCase()
-  // inputString += input;
-  // $("#input").val(inputString);
-  // transformLetter(input)
+  if(hasBeenDecoded){
+    reset();
+    hasBeenDecoded = false;
+  }
 
   if(key.which >= 65 && key.which <= 90){
     input = key.originalEvent.key.toUpperCase();
@@ -283,4 +282,42 @@ function validateKeyPress(key){
 
 
   }
+}
+
+function decodeMessage(){
+
+  if(result.length === 0){
+    if(hasBeenDecoded){
+      reset();
+
+    }
+    $("#output").val("");
+
+    let message = $("#input").val().split("");
+
+
+    message.forEach((i)=>{
+      transformLetter(i);
+    })
+
+    hasBeenDecoded = true;
+  }
+
+
+}
+
+function reset(){
+  $("#input").val("");
+  $("#output").val("");
+  clearLampBoard();
+  $('#slot1Index').val(0);
+  $('#slot2Index').val(0);
+  $('#slot3Index').val(0);
+  $('#slot1').val("I");
+  $('#slot2').val("II");
+  $('#slot3').val("III");
+  inputString = "";
+  result = "";
+  hasBeenDecoded = false;
+
 }
