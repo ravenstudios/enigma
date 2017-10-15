@@ -1,7 +1,6 @@
 function transformLetter(input){
   clearLampBoard();
 
-  
 
   rotor1 = rotors[$("#slot1").val()].arr;
   rotor2 = rotors[$("#slot2").val()].arr;

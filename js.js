@@ -20,7 +20,8 @@ let rotor3;
 let r1Turnover;
 let r2Turnover;
 let r3Turnover;
-
+let plugboardValuesIn = [];
+let plugboardValuesOut = [];
 let inputString = "";
 let hasBeenDecoded = false;
 let rotors = {
@@ -47,10 +48,14 @@ $(()=>{
   makeSelectList();
   makeLampBoard();
   makePlugBoard();
-  plugboardRandom();
+
   $('#slot1').val("I");
   $('#slot2').val("II");
   $('#slot3').val("III");
+
+  $(window).keydown(function(key) {
+    document.activeElement.blur();//removes focus
+  });
 
   $(window).keyup(function(key) {
     validateKeyPress(key);
@@ -66,6 +71,9 @@ $(()=>{
 
   $(".pbSelect").change(()=>{
     plugboardValidation(document.activeElement);
+  });
+  $("#randomPlugboard").click(()=>{
+    plugboardRandom();
   });
 
 });
@@ -153,6 +161,7 @@ function validateKeyPress(key){
 
   if(key.which >= 65 && key.which <= 90){
     input = key.originalEvent.key.toUpperCase();
+    input = plugboardConvert(input);
     inputString += input;
     $("#input").val(inputString);
     transformLetter(input);
@@ -160,6 +169,7 @@ function validateKeyPress(key){
 
   if(key.which >= 97 && key.which <= 122){
     input = key.originalEvent.key.toUpperCase();
+    input = plugboardConvert(input);
     inputString += input;
     $("#input").val(inputString);
     transformLetter(input);

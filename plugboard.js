@@ -54,14 +54,15 @@ function plugboardValidation(currentItem){
   plugboardIn.forEach((i)=>{
 
     plugboardValues.push($("#" + i).val());
+    plugboardValuesIn.push($("#" + i).val());
   });
 
 
   plugboardOut.forEach((i)=>{
 
     plugboardValues.push($("#" + i).val());
+    plugboardValuesOut.push($("#" + i).val());
   });
-
 
 
   plugboardValues.forEach((item, index)=>{
@@ -131,5 +132,25 @@ function plugboardRandom(){
   }
 
  plugboardValidation();
+
+}
+
+
+function plugboardConvert(input){
+
+  let index;
+
+  index = plugboardValuesIn.indexOf(input);
+  if(index !== -1){
+    return plugboardValuesOut[index];
+  }
+
+  index = plugboardValuesOut.indexOf(input);
+  if(index !== -1){
+    return plugboardValuesIn[index];
+  }
+
+
+  return input;
 
 }
