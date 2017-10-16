@@ -107,7 +107,7 @@ function checkPlugBoard(){
 }
 
 function plugboardRandom(){
-  dataReset();
+
   let pb = [];
   let alphArr = alph.slice(0);
 
@@ -132,7 +132,7 @@ function plugboardRandom(){
   }
 
   plugboardValidation();
-
+  dataReset();
 }
 
 

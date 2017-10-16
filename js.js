@@ -26,6 +26,7 @@ let plugboardValuesIn = [];
 let plugboardValuesOut = [];
 let inputString = "";
 let hasBeenDecoded = false;
+let result = ""
 
 let rotors = {
   I:{
@@ -43,7 +44,7 @@ let rotors = {
 };
 
 
-let result = ""
+
 
 $(()=>{
   console.log("j querry");
@@ -73,6 +74,7 @@ $(()=>{
   });
 
   $(".pbSelect").change(()=>{
+    console.log("pb change");
     plugboardValidation(document.activeElement);
     dataReset();
   });
@@ -111,7 +113,7 @@ $(()=>{
 
 
 
-  getCookie();
+  setSettings();
 });
 
 
@@ -233,7 +235,7 @@ function reset(){
   result = "";
   hasBeenDecoded = false;
   plugboardValuesIn = [];
-  saveCookie();
+
 
 
   plugboardIn.forEach((i, index)=>{
@@ -244,6 +246,7 @@ function reset(){
     $("#"+i).val("");
   });
 
+  saveCookie();
 }
 
 
@@ -275,17 +278,43 @@ console.log("get settings");
   let settings = ""
 
   elements.forEach((i)=>{
-    settings += $("#" + i).val();
+    settings += $("#" + i).val() + ":";
   });
 
   plugboardIn.forEach((i)=>{
-    settings += $("#" + i).val();
+    settings += $("#" + i).val() + ":";
   });
 
   plugboardOut.forEach((i)=>{
-    settings += $("#" + i).val();
+    settings += $("#" + i).val() + ":";
   });
   return settings;
+}
+
+function setSettings(){
+
+  let settings = getCookie().split(":");
+console.log(settings);
+  if(settings === ""){//empty cookie, return and do nothing
+    return;
+  }
+//8
+
+  elements.forEach((i, index)=>{
+    $("#" + i).val(settings[index]);
+  });
+
+
+  if(settings.length > 8){
+
+    plugboardIn.forEach((i, index)=>{
+      $("#" + i).val(settings[index + 9]);
+    });
+
+    plugboardOut.forEach((i, index)=>{
+      $("#" + i).val(settings[index + 19]);
+    });
+  }
 }
 
 function saveCookie(){
