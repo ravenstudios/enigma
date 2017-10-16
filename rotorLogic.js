@@ -13,7 +13,7 @@ function transformLetter(input){
   rotor2Index = parseInt($( "#slot2Index" ).val());
   rotor3Index = parseInt($( "#slot3Index" ).val());
 
-
+  ringSetting();
   //let input = $("#input").val().toUpperCase();
 
   //rotor1Index++;
@@ -111,4 +111,28 @@ function turnoverBack(){
     rotor3Index--;
   }
   rotor1Index--;
+}
+
+function ringSetting(){
+
+  let ringSetting3 = parseInt($("#ringSetting3").val());
+  let ringSetting2 = parseInt($("#ringSetting2").val());
+  let ringSetting1 = parseInt($("#ringSetting1").val());
+
+  // rotor3 = shiftArray(rotor3, ringSetting3);
+  // rotor2 = shiftArray(rotor2, ringSetting2);
+  rotor1 = shiftArray(rotor1, ringSetting1);
+}
+
+function shiftArray(array, n){
+
+  let result = [];
+console.log(array);
+  for (var i = 0; i < array.length; i++) {
+
+    result.push(array[(i + n) % 26]);
+  }
+console.log(result);
+  return result;
+
 }
