@@ -58,12 +58,17 @@ $(()=>{
   $('#slot3').val("III");
 
   $(window).keydown(function(key) {
-    document.activeElement.blur();//removes focus
+
+    //allows to copy and paste without entering an input
+    if ((key.metaKey || key.ctrlKey) && ( key.which === 67 || key.which === 86 || key.which === 90)) {
+
+    }
+    else{
+      validateKeyPress(key);
+    }
   });
 
-  $(window).keyup(function(key) {
-    validateKeyPress(key);
-  });
+
 
   $("#submit").click(()=>{
     decodeMessage();
@@ -73,11 +78,36 @@ $(()=>{
     reset();
   });
 
+  $("#randSettings").click(()=>{
+    randSettings()
+  });
+
+  $("#getSettings").click(()=>{
+    if(validateRotors()){
+      $("#settingsIO").val(getSettings);
+    }
+
+  });
+
+  $("#setSettings").click(()=>{
+    let settings = $("#settingsIO").val();
+    if(settings !== ""){
+      setSettings(settings)
+    }
+  });
+
   $(".pbSelect").change(()=>{
-    console.log("pb change");
+
     plugboardValidation(document.activeElement);
     dataReset();
   });
+
+  $(".rotor").change(()=>{
+    $("#slot1").css("background-color", "white");
+    $("#slot2").css("background-color", "white");
+    $("#slot3").css("background-color", "white");
+  });
+
 
   $("#randomPlugboard").click(()=>{
     plugboardRandom();
@@ -86,7 +116,8 @@ $(()=>{
   $("#input").on('paste',()=> {
 
   setTimeout(()=> {
-    var text = $("#input").val().toUpperCase();
+    var text = $("#input").val().toUpperCase().replace(/\W+/g, " ");
+
     $("#input").val(formatCode(text))
   }, 100);
   });
@@ -130,31 +161,56 @@ var mod = function (n, m) {
     return Math.floor(remain >= 0 ? remain : remain + m);
 };
 
+function validateRotors(){
+
+  let error = false;
+  let errorIndex;
+  let r1 = $("#slot1").val();
+  let r2 = $("#slot2").val();
+  let r3 = $("#slot3").val();
+
+  let arr = [r1, r2, r3];
+
+  arr.forEach((item, index)=>{
+    if(arr.indexOf(item) !== -1){
+
+      if(arr.indexOf(item) !== index){
+        error = true;
+        errorIndex = index;
+      }
+    }
+  });
+
+  if(error){
+    alert("Conflicting rotors. Please change a rotor.")
+    $("#slot" + (errorIndex + 1)).css("background-color", "red");
+    return false;
+  }
+  return true;
+}
+
+
 function validateKeyPress(key){
 
   if(!checkPlugBoard()){
     return;
   }
+  if(!validateRotors()){
+    return;
+  }
+
   if(hasBeenDecoded){
     reset();
     hasBeenDecoded = false;
   }
 
-  if(key.which >= 65 && key.which <= 90){
+  if((key.which >= 97 && key.which <= 122) || (key.which >= 65 && key.which <= 90)){
+    document.activeElement.blur();//removes focus
     playSound();
     input = key.originalEvent.key.toUpperCase();
     input = plugboardConvert(input);
     inputString += input;
     $("#input").val(formatCode(inputString));
-    transformLetter(input);
-  }
-
-  if(key.which >= 97 && key.which <= 122){
-    playSound();
-    input = key.originalEvent.key.toUpperCase();
-    input = plugboardConvert(input);
-    inputString += input;
-    $("#input").val(inputString);
     transformLetter(input);
   }
 
@@ -164,9 +220,9 @@ function validateKeyPress(key){
     if(result.length > 0){
       clearLampBoard();
       inputString = inputString.substring(0, inputString.length - 1);
-      $("#input").val(inputString);
+      $("#input").val(formatCode(inputString));
       result = result.substring(0, result.length - 1);
-      $("#output").val(result)
+      $("#output").val(formatCode(result));
 
       turnoverBack();
 
@@ -190,7 +246,6 @@ function decodeMessage(){
     $("#output").val("");
 
     let message = $("#input").val().split("");
-    console.log(message);
 
     message.forEach((i)=>{
       if(i !== " "){
@@ -251,15 +306,8 @@ function reset(){
 
 
 function formatCode(str){
-  let removeSpaces = str.split("");
-  let temp = [];
+  console.log(str);
 
-  removeSpaces.forEach((i)=>{
-    if(i !== " "){
-      temp.push(i);
-    }
-  });
-  str = temp.join("");
   let result;
   var ret = [];
       var i;
@@ -274,7 +322,6 @@ function formatCode(str){
 }
 
 function getSettings(){
-console.log("get settings");
   let settings = ""
 
   elements.forEach((i)=>{
@@ -291,15 +338,21 @@ console.log("get settings");
   return settings;
 }
 
-function setSettings(){
+function setSettings(inputSettings){
+  let settings;
 
-  let settings = getCookie().split(":");
-console.log(settings);
-  if(settings === ""){//empty cookie, return and do nothing
-    return;
+  if(inputSettings === "" || inputSettings === undefined){
+    settings = getCookie();
+    if(settings === ""){
+      settings = "III:0:0:II:0:0:I:0:0:"
+    }
   }
-//8
+  else{
+    settings = inputSettings;
+  }
 
+
+  settings = settings.split(":");
   elements.forEach((i, index)=>{
     $("#" + i).val(settings[index]);
   });
@@ -331,7 +384,6 @@ function getCookie(){
         }
         if (c.indexOf(name) == 0) {
           let temp = c.substring(name.length, c.length);
-          console.log("get cookie "+temp);
             return temp;
         }
     }
@@ -347,4 +399,34 @@ function setCookie(cname,cvalue,exdays) {
     let temp = cname + "=" + cvalue + ";" + expires + ";path=/";
 
     document.cookie = temp;
+}
+
+
+
+function randSettings(){
+
+  let elements = ["slot3Index", "ringSetting3", "slot2Index", "ringSetting2", "slot1Index", "ringSetting1"];
+
+  plugboardRandom();
+
+  let randRotorArr = [];
+  let rotorArrLength = 0;
+
+  for (var rotor in rotors) {
+      randRotorArr.push(rotor);
+      rotorArrLength++;
+    }
+
+  for (var i = 0; i < rotorArrLength; i++) {
+
+      let rand = Math.floor(Math.random() * (randRotorArr.length - 0)) + 0;
+      $("#slot"+(i + 1)).val(randRotorArr[rand]);
+      randRotorArr.splice(rand, 1);
+    }
+
+  elements.forEach((i)=>{
+
+    let rand = Math.floor(Math.random() * (26 - 0)) + 0;
+    $("#" + i).val(rand);
+  });
 }

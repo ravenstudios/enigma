@@ -13,10 +13,9 @@ function transformLetter(input){
   rotor2Index = parseInt($( "#slot2Index" ).val());
   rotor3Index = parseInt($( "#slot3Index" ).val());
 
-  ringSetting();
-  //let input = $("#input").val().toUpperCase();
 
-  //rotor1Index++;
+  ringSetting();
+
   turnover();
 
   let inputPosistion = mod(alph.indexOf(input) + rotor1Index, 26);

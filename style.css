@@ -45,13 +45,22 @@ body{
   padding-top: 1%;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   font-size: 20px;
+  background-color: black;
 }
 
 .container{
   background-image: url("http://www.webdesigndev.com/wp-content/uploads/2015/02/3-Curved-Wooden-Backdrops-Vol.jpg");
   border-radius: 15px 15px 15px 15px;
   /*background-repeat: no-repeat;*/
-  background-size: 100%;
+  /*background-size: 100%;*/
+
+  background-attachment: fixed;
+    /* Center the background image */
+    background-position: center;
+    /* Set the background image to no repeat */
+    background-repeat: no-repeat;
+    /* Scale the background image to be as large as possible */
+    /*background-size: cover;*/
 }
 
 table, tr, td, th{
