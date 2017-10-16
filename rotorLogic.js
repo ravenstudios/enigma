@@ -69,7 +69,7 @@ function transformLetter(input){
 
   inputPosistion = mod(inputPosistion - rotor1Index, 26);
   result += alph[inputPosistion];
-  $("#output").val(result)
+  $("#output").val(formatCode(result));
 
   $('#slot1Index').val(rotor1Index % 26);
   $('#slot2Index').val(rotor2Index % 26);
@@ -130,7 +130,7 @@ function shiftArray(array, n){
 
   let result = [];
   let temp = [];
-console.log(array);
+
   for (var i = 0; i < array.length; i++) {
     let index = alph.indexOf(array[i])
     temp.push(alph[mod((index + n), 26)]);
@@ -140,8 +140,7 @@ console.log(array);
 
     result.push(temp[mod((i - n), 26)]);
   }
-console.log(result);
-console.log("");
+
   return result;
 
 }

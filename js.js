@@ -13,6 +13,8 @@ let reflector = ["Y", "R", "U", "H", "Q", "S", "L", "D", "P", "X", "N", "G", "O"
 let I = ["E", "K", "M", "F", "L", "G", "D", "Q", "V", "Z", "N", "T", "O", "W", "Y", "H", "X", "U", "S", "P", "A", "I", "B", "R", "C", "J"];
 let II = ["A", "J", "D", "K", "S", "I", "R", "U", "X", "B", "L", "H", "W", "T", "M", "C", "Q", "G", "Z", "N", "P", "Y", "F", "V", "O", "E"];
 let III =  ["B", "D", "F", "H", "J", "L", "C", "P", "R", "T", "X", "V", "Z", "N", "Y", "E", "I", "W", "G", "A", "K", "M", "U", "S", "Q", "O"];
+let routes = ["r1In", "r1Out", "r2In", "r2Out", "r3In", "r3Out", "rIn", "rOut", "r3InBack", "r3OutBack", "r2InBack", "r2OutBack", "r1InBack", "r1OutBack"];
+let elements = ["slot3", "slot3Index", "ringSetting3", "slot2", "slot2Index", "ringSetting2", "slot1", "slot1Index", "ringSetting1"];
 let plugboardValues = [];
 let rotor1;
 let rotor2;
@@ -24,6 +26,7 @@ let plugboardValuesIn = [];
 let plugboardValuesOut = [];
 let inputString = "";
 let hasBeenDecoded = false;
+
 let rotors = {
   I:{
     arr: I,
@@ -71,15 +74,51 @@ $(()=>{
 
   $(".pbSelect").change(()=>{
     plugboardValidation(document.activeElement);
+    dataReset();
   });
+
   $("#randomPlugboard").click(()=>{
     plugboardRandom();
   });
 
+  $("#input").on('paste',()=> {
+
+  setTimeout(()=> {
+    var text = $("#input").val().toUpperCase();
+    $("#input").val(formatCode(text))
+  }, 100);
+  });
+
+  $(".lamp").click((lamp)=>{
+    playSound();
+    let element = lamp.currentTarget.id;
+
+    setTimeout(()=> {
+      $("#" + element).css("background-color", "grey")
+    }, 20);
+    setTimeout(()=> {
+      $("#" + element).css("background-color", "white")
+    }, 100);
+
+    transformLetter($("#" + element).val());
+
+  });
+
+  $(".dataReset").change(()=>{
+    dataReset();
+  });
+
+
+
+
+  getCookie();
 });
 
 
 
+function playSound(){
+  new Audio('sounds/click.mp3').play();
+}
 
 
 
@@ -88,84 +127,6 @@ var mod = function (n, m) {
     var remain = n % m;
     return Math.floor(remain >= 0 ? remain : remain + m);
 };
-
-
-function makeSelectList(){
-
-
-
-  for (var i = 0; i < 26; i++) {
-
-    $('#slot1Index').append($('<option>', {
-      value: i,
-      text:  alph[i] + " " + (i + 1)
-    }));
-
-    $('#slot2Index').append($('<option>', {
-      value: i,
-      text:  alph[i] + " " + (i + 1)
-    }));
-
-    $('#slot3Index').append($('<option>', {
-      value: i,
-      text:  alph[i] + " " + (i + 1)
-    }));
-  }
-
-  for (var i = 0; i < 26; i++) {
-
-    $('#ringSetting3').append($('<option>', {
-      value: i,
-      text:  i
-    }));
-
-    $('#ringSetting2').append($('<option>', {
-      value: i,
-      text:  i
-    }));
-
-    $('#ringSetting1').append($('<option>', {
-      value: i,
-      text:  i
-    }));
-  }
-}
-
-
-
-function clearLampBoard(){
-  for (var i = 0; i < 26; i++) {
-    let l = alph[i];
-      $("#lamp" + l).css("background-color", "white");
-    }
-}
-function makeLampBoard(){
-  let html = "<table><tr>";
-  lampboardRow1.forEach((i)=>{
-
-    html +="<td><input class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
-
-
-  });
-  html += "</tr>";
-  html += "<tr>";
-  lampboardRow2.forEach((i)=>{
-
-    html += "<td><input style=\"margin-left: 50%\" class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
-
-  });
-  html += "</tr>";
-  html += "<tr>";
-
-
-  lampboardRow3.forEach((i)=>{
-
-    html += "<td><input class=\"lamp\" type=\"text\" id=\"lamp" + i +"\" value=\"" +i +"\"readonly></td>";
-  });
-
-  html += "</tr></table>"
-  $("#lampboard").append(html);
-}
 
 function validateKeyPress(key){
 
@@ -178,6 +139,7 @@ function validateKeyPress(key){
   }
 
   if(key.which >= 65 && key.which <= 90){
+    playSound();
     input = key.originalEvent.key.toUpperCase();
     input = plugboardConvert(input);
     inputString += input;
@@ -186,6 +148,7 @@ function validateKeyPress(key){
   }
 
   if(key.which >= 97 && key.which <= 122){
+    playSound();
     input = key.originalEvent.key.toUpperCase();
     input = plugboardConvert(input);
     inputString += input;
@@ -225,16 +188,29 @@ function decodeMessage(){
     $("#output").val("");
 
     let message = $("#input").val().split("");
-
+    console.log(message);
 
     message.forEach((i)=>{
-      transformLetter(i);
+      if(i !== " "){
+        transformLetter(i);
+      }
+
     })
 
     hasBeenDecoded = true;
   }
 
 
+}
+function dataReset(){
+  $("#input").val("");
+  $("#output").val("");
+  clearLampBoard();
+  inputString = "";
+  result = "";
+  hasBeenDecoded = false;
+  plugboardValuesIn = [];
+  saveCookie();
 }
 
 function reset(){
@@ -247,10 +223,18 @@ function reset(){
   $('#slot1').val("I");
   $('#slot2').val("II");
   $('#slot3').val("III");
+  $("#ringSetting3").val("0")
+  $("#ringSetting2").val("0")
+  $("#ringSetting1").val("0")
+  routes.forEach((i)=>{
+    $("#" + i).val("");
+  });
   inputString = "";
   result = "";
   hasBeenDecoded = false;
   plugboardValuesIn = [];
+  saveCookie();
+
 
   plugboardIn.forEach((i, index)=>{
     $("#"+i).val("");
@@ -264,6 +248,16 @@ function reset(){
 
 
 function formatCode(str){
+  let removeSpaces = str.split("");
+  let temp = [];
+
+  removeSpaces.forEach((i)=>{
+    if(i !== " "){
+      temp.push(i);
+    }
+  });
+  str = temp.join("");
+  let result;
   var ret = [];
       var i;
       var len;
@@ -272,5 +266,56 @@ function formatCode(str){
          ret.push(str.substr(i, 4))
       }
 
-      return ret.join(" ");
+      result =  ret.join(" ");
+      return result;
+}
+
+function getSettings(){
+console.log("get settings");
+  let settings = ""
+
+  elements.forEach((i)=>{
+    settings += $("#" + i).val();
+  });
+
+  plugboardIn.forEach((i)=>{
+    settings += $("#" + i).val();
+  });
+
+  plugboardOut.forEach((i)=>{
+    settings += $("#" + i).val();
+  });
+  return settings;
+}
+
+function saveCookie(){
+  setCookie("settings", getSettings(), 30);
+}
+
+function getCookie(){
+  var name = "settings=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          let temp = c.substring(name.length, c.length);
+          console.log("get cookie "+temp);
+            return temp;
+        }
+    }
+    return "";
+}
+
+
+function setCookie(cname,cvalue,exdays) {
+
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires=" + d.toGMTString();
+    let temp = cname + "=" + cvalue + ";" + expires + ";path=/";
+
+    document.cookie = temp;
 }
