@@ -90,7 +90,8 @@ function turnover(){
     rotor2Index++;
   }
 
-  if(r1Pos === r1Turnover && r2Pos === r2Turnover){
+  if(r2Pos === r2Turnover){
+    rotor2Index++;
     rotor3Index++;
   }
   rotor1Index++;
@@ -119,20 +120,28 @@ function ringSetting(){
   let ringSetting2 = parseInt($("#ringSetting2").val());
   let ringSetting1 = parseInt($("#ringSetting1").val());
 
-  // rotor3 = shiftArray(rotor3, ringSetting3);
-  // rotor2 = shiftArray(rotor2, ringSetting2);
+  rotor3 = shiftArray(rotor3, ringSetting3);
+  rotor2 = shiftArray(rotor2, ringSetting2);
   rotor1 = shiftArray(rotor1, ringSetting1);
+
 }
 
 function shiftArray(array, n){
 
   let result = [];
+  let temp = [];
 console.log(array);
   for (var i = 0; i < array.length; i++) {
+    let index = alph.indexOf(array[i])
+    temp.push(alph[mod((index + n), 26)]);
+  }
 
-    result.push(array[(i + n) % 26]);
+  for (var i = 0; i < 26; i++) {
+
+    result.push(temp[mod((i - n), 26)]);
   }
 console.log(result);
+console.log("");
   return result;
 
 }
