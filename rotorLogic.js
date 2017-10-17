@@ -4,6 +4,9 @@ function transformLetter(input){
   rotor1 = rotors[$("#slot1").val()].arr;
   rotor2 = rotors[$("#slot2").val()].arr;
   rotor3 = rotors[$("#slot3").val()].arr;
+  console.log(rotor1);
+  console.log(rotor2);
+  console.log(rotor3);
   r1Turnover = rotors[$("#slot1").val()].turnover;
   r2Turnover = rotors[$("#slot2").val()].turnover;
   r3Turnover = rotors[$("#slot3").val()].turnover;
