@@ -155,7 +155,7 @@ $(()=>{
 
 
     $("#input").val(formatCode(temp));
-    transformLetter($("#" + element).val());
+    transformLetter(input);
 
   });
 

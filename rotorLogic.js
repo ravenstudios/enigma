@@ -1,7 +1,6 @@
 function transformLetter(input){
   clearLampBoard();
 
-
   rotor1 = rotors[$("#slot1").val()].arr;
   rotor2 = rotors[$("#slot2").val()].arr;
   rotor3 = rotors[$("#slot3").val()].arr;
@@ -67,7 +66,7 @@ function transformLetter(input){
   /////////////////////////output////////////////////////////////////////////////////////////////////
 
   inputPosistion = mod(inputPosistion - rotor1Index, 26);
-  result += alph[inputPosistion];
+  result += plugboardConvert(alph[inputPosistion]);
   $("#output").val(formatCode(result));
 
   $('#slot1Index').val(rotor1Index % 26);
