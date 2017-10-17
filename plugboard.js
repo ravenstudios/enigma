@@ -44,12 +44,13 @@ function makePlugBoard(){
 }
 
 function plugboardValidation(currentItem){
+  plugboardValuesIn = [];
+  plugboardValuesOut = [];
   plugboardValues = [];
   let pbInVals = [];
   let pbOutVals = [];
   let error = false;
   let errorIndex;
-
 
   plugboardIn.forEach((i)=>{
 
@@ -63,6 +64,8 @@ function plugboardValidation(currentItem){
     plugboardValues.push($("#" + i).val());
     plugboardValuesOut.push($("#" + i).val());
   });
+
+
 
 
   plugboardValues.forEach((item, index)=>{
@@ -112,12 +115,12 @@ function plugboardRandom(){
   let alphArr = alph.slice(0);
 
 
-  plugboardIn.forEach((i)=>{
+  plugboardIn.forEach((i)=>{//textboxs ids
     pb.push(i)
   });
 
 
-  plugboardOut.forEach((i)=>{
+  plugboardOut.forEach((i)=>{//textboxs ids
     pb.push(i)
   });
 
@@ -127,7 +130,7 @@ function plugboardRandom(){
     let letter = alphArr[rand];
 
     alphArr.splice(rand, 1);
-    $("#"+pb[i]).val(letter);
+    $("#"+pb[i]).val(letter);//displays on plugboard textbox
 
   }
 

@@ -1,4 +1,4 @@
-console.log("enigma");
+
 
 let rotor1Index;
 let rotor2Index;
@@ -47,7 +47,7 @@ let rotors = {
 
 
 $(()=>{
-  console.log("j querry");
+
 
   makeSelectList();
   makeLampBoard();
@@ -58,7 +58,6 @@ $(()=>{
   $('#slot3').val("III");
 
   $(window).keydown(function(key) {
-
     //allows to copy and paste without entering an input
     if ((key.metaKey || key.ctrlKey) && ( key.which === 67 || key.which === 86 || key.which === 90)) {
 
@@ -90,9 +89,18 @@ $(()=>{
   });
 
   $("#setSettings").click(()=>{
+
     let settings = $("#settingsIO").val();
+    let patt = new RegExp(/(\w{1,3}:\d{1,2}:\d{1,3}:){3}(\w?:){20}/g);
+
     if(settings !== ""){
-      setSettings(settings)
+      if(patt.test(settings)){
+        setSettings(settings)
+      }
+      else{
+        alert("Input settings invalid. Please check and reenter");
+        $("#settingsIO").val("")
+      }
     }
   });
 
@@ -116,13 +124,21 @@ $(()=>{
   $("#input").on('paste',()=> {
 
   setTimeout(()=> {
-    var text = $("#input").val().toUpperCase().replace(/\W+/g, " ");
+    var text = $("#input").val().toUpperCase().replace(/\W+/g, "");
 
     $("#input").val(formatCode(text))
   }, 100);
   });
 
   $(".lamp").click((lamp)=>{
+
+    if(!checkPlugBoard()){
+      return;
+    }
+    if(!validateRotors()){
+      return;
+    }
+
     playSound();
     let element = lamp.currentTarget.id;
 
@@ -133,6 +149,13 @@ $(()=>{
       $("#" + element).css("background-color", "white")
     }, 100);
 
+    let temp = $("#input").val().replace(/\W+/g, "");//get text from input
+
+    temp += $("#" + element).val();//add on current key pressed
+
+
+
+    $("#input").val(formatCode(temp));
     transformLetter($("#" + element).val());
 
   });
@@ -266,7 +289,7 @@ function dataReset(){
   inputString = "";
   result = "";
   hasBeenDecoded = false;
-  plugboardValuesIn = [];
+  plugboardValues = [];
   saveCookie();
 }
 
@@ -306,7 +329,7 @@ function reset(){
 
 
 function formatCode(str){
-  console.log(str);
+
 
   let result;
   var ret = [];

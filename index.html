@@ -99,14 +99,14 @@
             <!-- panel panel-default -->
             <div class="panel-heading"><!-- panel-heading -->
               <h4 class="panel-title"><!-- panel-title-->
-                  <a data-toggle="collapse" href="#collapse1">Show Routes</a>
+                  <button class="btn btn-default btn-sm settings" data-toggle="collapse" href="#collapse1">Show Routes</button>
               </h4>
             </div><!-- !panel-heading -->
 
 
             <div id="collapse1" class="panel-collapse collapse">  <!-- collapse1-->
 
-              <div class="panel-body"><!-- ****panel-body******-->
+              <div class="panel-body pannelDiv routes "><!-- ****panel-body******-->
 
                 <table>
                   <tr>
@@ -118,12 +118,12 @@
                     <th>R3 Out</th>
                     <th>Ref In</th>
                     <th>Ref Out</th>
-                    <th>R1 Back In</th>
-                    <th>R1 Back Out</th>
-                    <th>R2 Back In</th>
-                    <th>R2 Back Out</th>
-                    <th>R3 Back In</th>
-                    <th>R3 Back Out</th>
+                    <th>R1 In</th>
+                    <th>R1 Out</th>
+                    <th>R2 In</th>
+                    <th>R2 Out</th>
+                    <th>R3 In</th>
+                    <th>R3 Out</th>
                   </tr>
 
                   <tr>
@@ -148,50 +148,54 @@
             </div><!-- collapse1-->
           </div><!-- !panel routes-->
 
+          <div class="panel panel-default"><!-- panel settings-->
+
+                  <div class="panel-heading"><!-- panel-heading-->
+                    <h4 class="panel-title">
+                        <button class="btn btn-default btn-sm settings" data-toggle="collapse" href="#collapse3">Settings</button>
+                    </h4>
+                  </div><!-- !panel-heading-->
+
+                  <div id="collapse3" class="panel-collapse collapse"><!-- panel-collapse -->
+                    <!-- -->
+                    <div class="row panel-body center-block pannelDiv"><!-- ****panel-body******-->
+
+
+                        <button class="btn btn-default btn-sm settings" type="button" id="randSettings">Randomize Settings</button>
+                        <button class="btn btn-default btn-sm settings" type="button" id=getSettings>Get Settings</button>
+                        <input class="settings text-center" type="text" id="settingsIO" placeholder="Paste in settings">
+                        <button class="btn btn-default btn-sm settings" type="button" id="setSettings">Set Settings</button>
+
+                    </div><!-- ****!panel-body******-->
+
+                  </div><!-- !panel-collapse -->
+            <!-- !panel-title -->
+          </div><!-- !panel instructions-->
           <div class="panel panel-default"><!-- panel instructions-->
 
                   <div class="panel-heading"><!-- panel-heading-->
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse2">Instructions</a>
+                        <button class="btn btn-default btn-sm settings" data-toggle="collapse" href="#collapse2">Instructions</button>
                     </h4>
                   </div><!-- !panel-heading-->
 
                   <div id="collapse2" class="panel-collapse collapse"><!-- panel-collapse -->
                     <!-- -->
                     <div class="panel-body"><!-- ****panel-body******-->
-                      <p class="instructions">
-                        Just start typing and the results will be displayed at the bottom.
+                      <p class="instructions pannelDiv text-center">
+                        Take note of all the settings (which rotor, rotor setting, ring setting and plugboard).
+                        You can also hit the settings button to randomize all settings, retrieve current settings in the form
+                        of text string as well as paste a settings text string into the same box and set all the settings.
+                        After all setings are done, you just start typing or click on the letter on the lampboard.
+                        If you make a mistake you hit hit the back space key.
+                        You can also paste in text to the textbox and click on decode to crypt or decrypt the mesage.
+                        For more information check out this <a href="https://www.youtube.com/watch?v=G2_Q9FoD-oQ&t=372s" alt="enigma machine youtube video">video</a>.
                       </p>
                     </div><!-- ****!panel-body******-->
 
                   </div><!-- !panel-collapse -->
             <!-- !panel-title -->
           </div><!-- !panel instructions-->
-
-          <div class="panel panel-default"><!-- panel settings-->
-
-                  <div class="panel-heading"><!-- panel-heading-->
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse3">Settings</a>
-                    </h4>
-                  </div><!-- !panel-heading-->
-
-                  <div id="collapse3" class="panel-collapse collapse"><!-- panel-collapse -->
-                    <!-- -->
-                    <div class="panel-body center-block settings"><!-- ****panel-body******-->
-
-
-                        <button type="button" id="randSettings">Randomize Settings</button>
-                        <button type="button" id=getSettings>Get Settings</button>
-                        <input type="text" id="settingsIO" placeholder="Paste in settings">
-                        <button type="button" id="setSettings">Set Settings</button>
-
-                    </div><!-- ****!panel-body******-->
-
-                  </div><!-- !panel-collapse -->
-            <!-- !panel-title -->
-          </div><!-- !panel instructions-->
-
         </div>
         <!-- !panel group -->
       </div>
@@ -220,9 +224,9 @@
       <div class="col center-block">
         <table>
           <tr>
-            <th>Key In</th>
+            <th style="color: white" >Key In</th>
             <td><input class="rotorBox" type="text" id="input" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
-            <td><button type="button"id="submit">Decode</button></td>
+            <td><button class="btn btn-default btn-sm settings" type="button"id="submit">Decode</button></td>
           </tr>
         </table>
 
@@ -235,9 +239,9 @@
       <div class="col center-block"><!-- Output row-->
         <table>
           <tr>
-            <th>Output</th>
+            <th style="color: white">Output</th>
             <td><input type="text" id="output" value="" readonly></td>
-            <td><button type="button"id="reset">Reset</button></td>
+            <td><button class="btn btn-default btn-sm settings" type="button"id="reset">Reset</button></td>
           </tr>
         </table>
 
@@ -258,7 +262,7 @@
             <div class="panel-heading">
               <!-- panel-heading -->
               <h4 class="panel-title"><!-- panel-title-->
-                  <a data-toggle="collapse" href="#collapse4"><p id="plugboardButton">Plug Board</p></a>
+                  <button class="btn btn-default btn-sm settings"  data-toggle="collapse" href="#collapse4">Plug Board</button>
                 </h4>
             </div>
             <!-- !panel-heading -->
@@ -270,7 +274,7 @@
 
                 </div>
                 <div class="center-block">
-                  <button type="button"id="randomPlugboard">Randomize Plugboard</button>
+                  <button class="btn btn-default btn-sm settings" type="button"id="randomPlugboard">Randomize Plugboard</button>
                 </div>
 
               </div><!-- ****!panel-body******-->
