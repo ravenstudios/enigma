@@ -150,9 +150,8 @@ $(()=>{
     }, 100);
 
     let temp = $("#input").val().replace(/\W+/g, "");//get text from input
-
-    temp += $("#" + element).val();//add on current key pressed
-
+    input = plugboardConvert($("#" + element).val());
+    temp += input//add on current key pressed
 
 
     $("#input").val(formatCode(temp));
