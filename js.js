@@ -30,7 +30,7 @@ let inputString = "";
 let hasBeenDecoded = false;
 let result = ""
 
-let rotors = {
+let rotors = {//object that holds rotor arrays, turn over point and name
   I:{
     arr: I,
     turnover: "Q"
@@ -52,25 +52,27 @@ let rotors = {
     turnover: "Z"
   }
 };
+//***************************************************************
+//**                                                           **
+//**  setup for program and dom actions                        **
+//**                                                           **
+//***************************************************************
 
-
-
-
-$(()=>{
+$(()=>{//jquery on document ready
 
 
   makeSelectList();
   makeLampBoard();
   makePlugBoard();
 
-  $('#slot1').val("I");
+  $('#slot1').val("I");//sets default choosen rotors
   $('#slot2').val("II");
   $('#slot3').val("III");
 
   $(window).keydown(function(key) {
-    //allows to copy and paste without entering an input
-    if ((key.metaKey || key.ctrlKey) && ( key.which === 67 || key.which === 86 || key.which === 90)) {
 
+    if ((key.metaKey || key.ctrlKey) && ( key.which === 67 || key.which === 86 || key.which === 90)) {
+      //allows to copy and paste without entering an input
     }
     else{
       validateKeyPress(key);
@@ -89,6 +91,7 @@ $(()=>{
 
   $("#randSettings").click(()=>{
     randSettings()
+    $("#settingsIO").val(getSettings);
   });
 
   $("#getSettings").click(()=>{
@@ -101,6 +104,7 @@ $(()=>{
   $("#setSettings").click(()=>{
 
     let settings = $("#settingsIO").val();
+    //validates input setting string
     let patt = new RegExp(/(\w{1,3}:\d{1,2}:\d{1,3}:){3}(\w?:){20}/g);
 
     if(settings !== ""){
@@ -142,16 +146,17 @@ $(()=>{
 
   $(".lamp").click((lamp)=>{
 
-    if(!checkPlugBoard()){
+    if(!checkPlugBoard()){//checks if plugboard settings are valid
       return;
     }
-    if(!validateRotors()){
+    if(!validateRotors()){//check if rotor selections are valid
       return;
     }
 
     playSound();
-    let element = lamp.currentTarget.id;
+    let element = lamp.currentTarget.id;//click sound
 
+    //mimics button press by making lamp background color go grey for waiting for 20ms the going back to white after 100ms
     setTimeout(()=> {
       $("#" + element).css("background-color", "grey")
     }, 20);
@@ -159,13 +164,12 @@ $(()=>{
       $("#" + element).css("background-color", "white")
     }, 100);
 
-    let temp = $("#input").val().replace(/\W+/g, "");//get text from input
-    input = plugboardConvert($("#" + element).val());
+    let temp = $("#input").val().replace(/\W+/g, "");//get text from input removing all but letters
+    input = plugboardConvert($("#" + element).val());//sends the input through the plugboard
     temp += input//add on current key pressed
 
-
-    $("#input").val(formatCode(temp));
-    transformLetter(input);
+    $("#input").val(formatCode(temp));//uses the 4 space format
+    transformLetter(input);//sends input through the rotors
 
   });
 
@@ -173,13 +177,14 @@ $(()=>{
     dataReset();
   });
 
-
-
-
-  setSettings();
+  setSettings();//on document load reads the cookie and sets the settings
 });
 
-
+//***************************************************************
+//**                                                           **
+//**  reset and validatioins                                   **
+//**                                                           **
+//***************************************************************
 
 function playSound(){
   new Audio('sounds/click.mp3').play();
@@ -188,7 +193,7 @@ function playSound(){
 
 
 
-var mod = function (n, m) {
+var mod = function (n, m) {//lets modulas work with negitive numbers
     var remain = n % m;
     return Math.floor(remain >= 0 ? remain : remain + m);
 };
@@ -204,11 +209,11 @@ function validateRotors(){
   let arr = [r1, r2, r3];
 
   arr.forEach((item, index)=>{
-    if(arr.indexOf(item) !== -1){
+    if(arr.indexOf(item) !== -1){//if is in the array
 
-      if(arr.indexOf(item) !== index){
-        error = true;
-        errorIndex = index;
+      if(arr.indexOf(item) !== index){//and item is not checking it self
+        error = true;//using a boolean because if multiple errors found mulitple alerts would be triggered
+        errorIndex = index;//stores the item the error ocurred
       }
     }
   });
@@ -224,44 +229,45 @@ function validateRotors(){
 
 function validateKeyPress(key){
 
-  if(!checkPlugBoard()){
+  if(!checkPlugBoard()){//checks if plugboard is valid
     return;
   }
-  if(!validateRotors()){
+  if(!validateRotors()){//checks if rotor selection is valid
     return;
   }
 
-  if(hasBeenDecoded){
+  if(hasBeenDecoded){//prevents adding onto a decoded message
     reset();
     hasBeenDecoded = false;
   }
-
+//only accepts a-z and A-Z
   if((key.which >= 97 && key.which <= 122) || (key.which >= 65 && key.which <= 90)){
     document.activeElement.blur();//removes focus
-    playSound();
-    input = key.originalEvent.key.toUpperCase();
-    input = plugboardConvert(input);
-    inputString += input;
-    $("#input").val(formatCode(inputString));
-    transformLetter(input);
+    playSound();//click sound
+    input = key.originalEvent.key.toUpperCase();//gets key pressed
+    input = plugboardConvert(input);//sends input through plugboard
+    inputString += input;//adds input to inputString for displaying
+    $("#input").val(formatCode(inputString));//displays string
+    transformLetter(input);//sends through rotors
   }
 
+//backspace
   if(key.which === 8 || key.which === 46){
 
 
     if(result.length > 0){
       clearLampBoard();
-      inputString = inputString.substring(0, inputString.length - 1);
-      $("#input").val(formatCode(inputString));
-      result = result.substring(0, result.length - 1);
-      $("#output").val(formatCode(result));
+      inputString = inputString.substring(0, inputString.length - 1);//removes last char of input string
+      $("#input").val(formatCode(inputString));//displays new string
+      result = result.substring(0, result.length - 1);//removes the last char of the output string
+      $("#output").val(formatCode(result));//displays new string
 
-      turnoverBack();
+      turnoverBack();//turns rotors backwards
 
-      $('#slot1Index').val(rotor1Index % 26);
-      $('#slot2Index').val(rotor2Index % 26);
-      $('#slot3Index').val(rotor3Index % 26);
-      $("#lamp" + result[result.length - 1]).css("background-color", "yellow");
+      $('#slot1Index').val(mod(rotor1Index, 26));//displays rotor setting
+      $('#slot2Index').val(mod(rotor2Index, 26));
+      $('#slot3Index').val(mod(rotor3Index, 26));
+      $("#lamp" + result[result.length - 1]).css("background-color", "yellow");//displays lamp for last char entered
     }
 
 
@@ -273,25 +279,24 @@ function decodeMessage(){
   if(result.length === 0){
     if(hasBeenDecoded){
       reset();
-
     }
-    $("#output").val("");
 
-    let message = $("#input").val().split("");
+    $("#output").val("");//clears output
+
+    let message = $("#input").val().split("");//gets input and converts into array
 
     message.forEach((i)=>{
       if(i !== " "){
         transformLetter(i);
       }
-
     })
 
     hasBeenDecoded = true;
   }
-
-
 }
-function dataReset(){
+
+
+function dataReset(){//resets inputs and outputs
   $("#input").val("");
   $("#output").val("");
   clearLampBoard();
@@ -299,47 +304,29 @@ function dataReset(){
   result = "";
   hasBeenDecoded = false;
   plugboardValues = [];
+  $("#settingsIO").val(getSettings);
   saveCookie();
 }
 
-function reset(){
+function reset(){//resets everthing
   $("#input").val("");
   $("#output").val("");
   clearLampBoard();
-  $('#slot1Index').val(0);
-  $('#slot2Index').val(0);
-  $('#slot3Index').val(0);
-  $('#slot1').val("I");
-  $('#slot2').val("II");
-  $('#slot3').val("III");
-  $("#ringSetting3").val("0")
-  $("#ringSetting2").val("0")
-  $("#ringSetting1").val("0")
+  setSettings("III:0:0:II:0:0:I:0:0:::::::::::::::::::::");//sets settings to default
+
   routes.forEach((i)=>{
-    $("#" + i).val("");
+    $("#" + i).val("");//clears routes textboxs
   });
+
   inputString = "";
   result = "";
   hasBeenDecoded = false;
   plugboardValuesIn = [];
   plugboardValuesOut = [];
-
-
-
-  plugboardIn.forEach((i, index)=>{
-    $("#"+i).val("");
-  });
-
-  plugboardOut.forEach((i, index)=>{
-    $("#"+i).val("");
-  });
-
+  $("#settingsIO").val(getSettings);
   saveCookie();
 }
-
-
-function formatCode(str){
-
+function formatCode(str){//4 block spacing
 
   let result;
   var ret = [];
@@ -371,27 +358,27 @@ function getSettings(){
   return settings;
 }
 
-function setSettings(inputSettings){
+function setSettings(inputSettings){//get settings from input settings or from cookie
   let settings;
 
-  if(inputSettings === "" || inputSettings === undefined){
+  if(inputSettings === "" || inputSettings === undefined){//if argument is blank get settings from cookie
     settings = getCookie();
-    if(settings === ""){
+    if(settings === ""){//if no cookie then use this default
       settings = "III:0:0:II:0:0:I:0:0:"
     }
   }
   else{
-    settings = inputSettings;
+    settings = inputSettings;//use settings from cookie
   }
 
 
-  settings = settings.split(":");
+  settings = settings.split(":");//sets all rotor settings
   elements.forEach((i, index)=>{
     $("#" + i).val(settings[index]);
   });
 
 
-  if(settings.length > 8){
+  if(settings.length > 8){//if plugboard settings passed inset plugboard as wel
 
     plugboardIn.forEach((i, index)=>{
       $("#" + i).val(settings[index + 9]);
@@ -404,7 +391,7 @@ function setSettings(inputSettings){
 }
 
 function saveCookie(){
-  setCookie("settings", getSettings(), 30);
+  setCookie("settings", getSettings(), 30);//save cookie, name of cookie, value and number of days till expires
 }
 
 function getCookie(){
@@ -445,16 +432,16 @@ function randSettings(){
   let randRotorArr = [];
   let rotorArrLength = 0;
 
-  for (var rotor in rotors) {
+  for (var rotor in rotors) {//gets the arrays from the rotors object
       randRotorArr.push(rotor);
       rotorArrLength++;
     }
 
   for (var i = 0; i < rotorArrLength; i++) {
 
-      let rand = Math.floor(Math.random() * (randRotorArr.length - 0)) + 0;
-      $("#slot"+(i + 1)).val(randRotorArr[rand]);
-      randRotorArr.splice(rand, 1);
+      let rand = Math.floor(Math.random() * (randRotorArr.length - 0)) + 0;//random number between 0 and num of rotors
+      $("#slot"+(i + 1)).val(randRotorArr[rand]);//sets the rotors
+      randRotorArr.splice(rand, 1);//pops the random item from the array so it dosnt get picked again
     }
 
   elements.forEach((i)=>{
