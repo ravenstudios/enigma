@@ -322,6 +322,7 @@ function reset(){
   result = "";
   hasBeenDecoded = false;
   plugboardValuesIn = [];
+  plugboardValuesOut = [];
 
 
 
